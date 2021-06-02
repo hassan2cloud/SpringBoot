@@ -1,0 +1,70 @@
+package com.nsf.oper3.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+public class DemoController {
+    @ModelAttribute(name = "nsfenvs")
+    public List<String> getnsfenv () {
+
+        List<String> nsfenvlist = new ArrayList<String>();
+        nsfenvlist.add("All EBS");
+        nsfenvlist.add("SBX");
+        nsfenvlist.add("PTX");
+        nsfenvlist.add("PFX");
+        nsfenvlist.add("TRN");
+
+        return nsfenvlist;
+    }
+
+    @ModelAttribute(name = "nsfenvs1")
+//    public List<String>  get1env () {
+    public String get1env () {
+
+        String nsf1env = new String();
+      //  nsf1env.getEnv(get1env());
+        return nsf1env;
+    }
+
+
+    @GetMapping("/home")
+    public String home(@ModelAttribute("nsfenvs") List < String > nsfenvlist, Model model) {
+
+        //Add more countries
+        nsfenvlist.add("Australia");
+        nsfenvlist.add("Canada");
+
+        return "index";
+         }
+
+    @GetMapping("/demo")
+    public String getTask(@ModelAttribute("nsfenvs") List < String > nsfenvlist) //, Model model)
+    {
+        return "ansible_tasks";
+    }
+
+    @GetMapping(path="/demo/{env1}")
+    //@ResponseBody
+    public String getOperations(@ModelAttribute("nsfenvs1") @PathVariable("env1") List<String> nsfenvlist) //, String nsfenv )
+    {
+
+        for (int i = 0; i < nsfenvlist.size(); i++) {
+            System.out.println(nsfenvlist.get(i));
+            //System.out.println("env1");
+        }
+
+        System.out.println(nsfenvlist);
+        return "ansible_tasks";
+    }
+    public String getEnv(@PathVariable String env1) {
+        return env1;
+    }
+}
